@@ -18,6 +18,7 @@ namespace Web.Models
         public string ContactEmail { get; set; }
 
         [Required(ErrorMessage = "Номер телефона обязателен для заполнения.")]
+        [RegularExpression(@"^(\d{10})$", ErrorMessage = "Wrong mobile")]
         [StringLength(15, ErrorMessage = "Номер телефона не должен превышать 15 символов.")]
         public string PhoneNumber { get; set; }
 

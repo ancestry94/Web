@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using Web.Data;
+using Web.Services;
 
 var builder = WebApplication.CreateBuilder();
 
@@ -12,7 +13,6 @@ builder.Services.AddDbContext<FormsDbContext>(options =>
 
 // Добавление контроллеров с представлениями
 builder.Services.AddControllersWithViews();
-
 var app = builder.Build();
 
 // Настройка маршрутизации

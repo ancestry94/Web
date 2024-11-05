@@ -4,6 +4,7 @@ using Web.Data;
 using Web.Models;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Web.Services;
 
 namespace Web.Controllers
 {
@@ -12,7 +13,6 @@ namespace Web.Controllers
     public class ContactsController : Controller
     {
         private readonly FormsDbContext _context;
-
         public ContactsController(FormsDbContext context)
         {
             _context = context;
@@ -22,6 +22,7 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+           
             var topics = await _context.MessageTopics.ToListAsync();
             ViewBag.Topics = topics;
             Debug.WriteLine($"Зашли на страницу.");
@@ -34,11 +35,11 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Contact contact, int topicId, string Messages)
         {
-            Debug.WriteLine($"Name {contact.ContactName} Message:{Messages}"); // Логирование ошибок в консоль
+            
             if (ModelState.IsValid)
             {
-                Debug.WriteLine($"Name {contact.ContactName} Message:{Messages}"); // Логирование ошибок в консоль
-                                                                                      // Проверяем существование контакта по email или номеру телефона
+              
+ // Проверяем существование контакта по email или номеру телефона
                 var existingContact = await _context.Contacts
             .FirstOrDefaultAsync(c => c.ContactEmail == contact.ContactEmail || c.PhoneNumber == contact.PhoneNumber);
 

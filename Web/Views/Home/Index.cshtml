@@ -33,3 +33,43 @@
     </div>
 </body>
 </html>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <!-- Подключение jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Подключение jQuery Validate -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+    <!-- Подключение jQuery Inputmask -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.5/jquery.inputmask.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Применяем маску к полю ввода номера телефона
+            $('#phoneNumber').inputmask("+7(999)999-9999");
+
+            // Добавляем правило для валидации номера телефона
+            $.validator.addMethod("checkPhone", function (value, element) {
+                return this.optional(element) || /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/.test(value);
+            });
+
+            // Настройка правил валидации
+            $("#contactForm").validate({
+                rules: {
+                    PhoneNumber: {
+                        required: true,
+                        checkPhone: true // Используем наше правило
+                    }
+                },
+                messages: {
+                    PhoneNumber: {
+                        required: "Пожалуйста, укажите номер телефона.",
+                        checkPhone: "Номер телефона должен быть в формате +7(904)123-23-33."
+                    }
+                }
+            });
+        });
+    </script>
+}
