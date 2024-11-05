@@ -1,0 +1,28 @@
+﻿@model Web.Models.Contact
+
+<h2>Детали контакта</h2>
+
+<div>
+    <h4>@Model.ContactName</h4>
+    <p>Email: @Model.ContactEmail</p>
+    <p>Телефон: @Model.PhoneNumber</p>
+</div>
+
+<h3>Сообщения</h3>
+@if (Model.Messages != null && Model.Messages.Any())
+{
+    <ul>
+        @foreach (var message in Model.Messages)
+        {
+            <li>@message.MessageText</li>
+        }
+    </ul>
+}
+else
+{
+    <p>Нет сообщений для этого контакта.</p>
+}
+
+<div>
+    <a asp-controller="Home"  asp-action="Index">Назад к списку контактов</a>
+</div>

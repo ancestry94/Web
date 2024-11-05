@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Web.Models.Contact>
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+    <h2>Список контактов</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Email</th>
+                <th>Телефон</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var contact in Model)
+            {
+                <tr>
+                    <td>@contact.ContactName</td>
+                    <td>@contact.ContactEmail</td>
+                    <td>@contact.PhoneNumber</td>
+                    <td><a asp-controller="Details" asp-action="Details" asp-route-id="@contact.ContactId">Просмотреть</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <a asp-controller="Contacts" asp-action="Create">Добавить новый контакт</a>
+    </div>
+</body>
+</html>

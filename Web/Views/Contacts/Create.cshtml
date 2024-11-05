@@ -1,0 +1,130 @@
+﻿@model Web.Models.Contact
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa; /* Светлый фон */
+        margin: 0;
+        padding: 20px;
+    }
+
+    h2 {
+        color: #343a40; /* Темный цвет текста */
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 15px; /* Отступ между группами полей */
+    }
+
+    label {
+        font-weight: bold; /* Полужирный шрифт для меток */
+    }
+
+    input.form-control,
+    textarea.form-control,
+    select.form-control {
+        width: 100%; /* Ширина полей на всю ширину контейнера */
+        padding: 10px; /* Отступ внутри полей */
+        border: 1px solid #ced4da; /* Цвет границы */
+        border-radius: 5px; /* Закругленные углы */
+        box-shadow: none; /* Убираем тень */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Цвет фона кнопки */
+        color: white; /* Цвет текста кнопки */
+        border: none; /* Убираем границу */
+        padding: 10px 15px; /* Отступы внутри кнопки */
+        border-radius: 5px; /* Закругленные углы кнопки */
+        cursor: pointer; /* Указатель при наведении на кнопку */
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Цвет фона при наведении на кнопку */
+        }
+
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .alert-success {
+        background-color: #d4edda; /* Цвет фона для успешных сообщений */
+        color: #155724; /* Цвет текста для успешных сообщений */
+    }
+
+    .alert-danger {
+        background-color: #f8d7da; /* Цвет фона для сообщений об ошибках */
+        color: #721c24; /* Цвет текста для сообщений об ошибках */
+    }
+</style>
+<h2>Добавить контакт и сообщение</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <strong>Ошибка!</strong> Пожалуйста, исправьте ошибки в форме.
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+<form asp-action="Create" method="post" asp-controller="Contact">
+    <div class="form-group">
+        <label asp-for="ContactName">Имя</label>
+        <input asp-for="ContactName" name="ContactName" class="form-control" />
+        <span asp-validation-for="ContactName" class="text-danger"></span>
+
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ContactEmail">Электронная почта</label>
+        <input asp-for="ContactEmail" class="form-control" />
+        <span asp-validation-for="ContactEmail" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhoneNumber">Номер телефона</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="topicId">Тема сообщения</label>
+        <select id="topicId" name="topicId" class="form-control" required>
+            @foreach (var topic in ViewBag.Topics)
+            {
+                <option value="@topic.TopicId">@topic.TopicName</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Messages">Номер телефона</label>
+        <input asp-for="Messages" class="form-control" />
+        <span asp-validation-for="Messages" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Добавить</button>
+</form>
+
+<div>
+    <a asp-controller="Home" asp-action="Index">Назад к списку контактов</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
