@@ -18,10 +18,10 @@ namespace Web.Models
         public string ContactEmail { get; set; }
 
         [Required(ErrorMessage = "Номер телефона обязателен для заполнения.")]
-        [RegularExpression(@"^(\d{10})$", ErrorMessage = "Wrong mobile")]
-        [StringLength(15, ErrorMessage = "Номер телефона не должен превышать 15 символов.")]
+        [RegularExpression(@"^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$", ErrorMessage = "Ошибка ввода номера телефона. Формат: +7(999)999-99-99")]
+        [StringLength(16, ErrorMessage = "Номер телефона не должен превышать 16 символов.")]
         public string PhoneNumber { get; set; }
-
+        [Required(ErrorMessage = "Пожалуйста, введите ваше сообщение.")]
         public virtual ICollection<Message> Messages { get; set; }
     }
 }

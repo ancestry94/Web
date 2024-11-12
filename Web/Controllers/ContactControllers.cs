@@ -4,7 +4,6 @@ using Web.Data;
 using Web.Models;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using Web.Services;
 
 namespace Web.Controllers
 {
@@ -22,10 +21,10 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-           
+            int captchaValue = new Random().Next(1000, 10000);
+            ViewBag.CaptchaValue = captchaValue; // Сохраняем значение капчи в ViewBag
             var topics = await _context.MessageTopics.ToListAsync();
             ViewBag.Topics = topics;
-            Debug.WriteLine($"Зашли на страницу.");
             return View();
         }
 
@@ -33,15 +32,16 @@ namespace Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Contact contact, int topicId, string Messages)
+        public async Task<IActionResult> Create(Contact contact, int topicId, string Messages, int userCaptchaValue, int captchaValue)
         {
-            
-            if (ModelState.IsValid)
+         
+
+            if (ModelState.IsValid && userCaptchaValue == captchaValue)
             {
               
  // Проверяем существование контакта по email или номеру телефона
                 var existingContact = await _context.Contacts
-            .FirstOrDefaultAsync(c => c.ContactEmail == contact.ContactEmail || c.PhoneNumber == contact.PhoneNumber);
+            .FirstOrDefaultAsync(c => c.ContactEmail == contact.ContactEmail && c.PhoneNumber == contact.PhoneNumber);
 
                 if (existingContact != null)
                 {
@@ -74,12 +74,17 @@ namespace Web.Controllers
 
                     _context.Messages.Add(message);
                     await _context.SaveChangesAsync();
-
-                    TempData["Message"] = "Контакт и сообщение были успешно добавлены.";
                 }
 
                 return RedirectToAction("Index", "Home"); // Перенаправление на список контактов или другую страницу
             }
+            ModelState.AddModelError(string.Empty, "Неверное значение капчи.");
+
+            // Генерация нового значения капчи при ошибке
+            captchaValue = new Random().Next(1000, 10000);
+            ViewBag.CaptchaValue = captchaValue;
+
+            
             Debug.WriteLine($"Name {contact.ContactName} Message:{Messages}"); // Логирование ошибок в консоль
 
 

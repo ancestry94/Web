@@ -1,9 +1,10 @@
+using AspNetCore.ReCaptcha;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using Web.Data;
-using Web.Services;
+
 
 var builder = WebApplication.CreateBuilder();
 

@@ -9,7 +9,7 @@ namespace Web.Models
         [Key]
         public int MessageId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Пожалуйста, введите ваше сообщение.")]
         public string MessageText { get; set; }
 
         [ForeignKey("MessageTopic")]
